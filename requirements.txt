@@ -1,0 +1,6 @@
+streamlit
+pandas
+pillow
+# 나중에 모델 연동 시 추가
+# torch 또는 tensorflow
+# opencv-python-headless
