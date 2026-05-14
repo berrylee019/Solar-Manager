@@ -1,0 +1,59 @@
+import streamlit as st
+import pandas as pd
+import time
+
+# 1. 페이지 설정
+st.set_page_config(page_title="솔라매니저 AI", layout="centered")
+
+# 2. 헤더 섹션
+st.title("☀️ 솔라매니저 AI")
+st.subheader("사진 한 장으로 내 발전소 수익을 지키세요")
+st.info("패널 사진을 업로드하면 AI가 오염도와 예상 손실액을 계산합니다.")
+
+# 3. 1단계: 사진 업로드
+uploaded_file = st.file_uploader("패널 사진을 선택하거나 촬영하세요", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
+    # 사진 표시
+    st.image(uploaded_file, caption="업로드된 패널 이미지", use_column_width=True)
+    
+    with st.spinner("AI가 패널 상태를 정밀 분석 중입니다..."):
+        # 분석 시뮬레이션 (여기에 형님의 Vision 모델 추론 로직 삽입)
+        time.sleep(2) 
+        
+        # 가상의 결과 데이터
+        status = "주의"
+        loss_rate = 12.5
+        loss_amount = 15400
+        
+    st.divider()
+
+    # 4. 2단계: 분석 결과 대시보드
+    st.header("🔍 AI 진단 결과")
+    
+    col1, col2, col3 = st.columns(3)
+    col1.metric("종합 상태", status, delta="-오염 감지", delta_color="inverse")
+    col2.metric("예상 손실률", f"{loss_rate}%")
+    col3.metric("월 손실 금액", f"₩{loss_amount:,}")
+
+    # 상세 판독 테이블
+    df = pd.DataFrame({
+        "탐지 항목": ["표면 오염", "미세 균열", "핫스팟"],
+        "상태": ["심각", "정상", "의심"],
+        "권고 사항": ["전체 세척 권장", "이상 없음", "배선 점검 필요"]
+    })
+    st.table(df)
+
+    # 5. 3단계: 액션 버튼
+    st.success(f"💡 지금 세척하면 이번 달 약 {loss_amount:,}원을 더 벌 수 있습니다!")
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("🧼 인근 세정 업체 견적 받기"):
+            st.write("가까운 전문 업체 3곳에 견적을 요청했습니다. (준비 중)")
+    with c2:
+        if st.button("📄 상세 PDF 리포트 다운로드"):
+            st.write("리포트를 생성 중입니다. (준비 중)")
+
+else:
+    st.warning("분석을 시작하려면 사진을 업로드해 주세요.")
