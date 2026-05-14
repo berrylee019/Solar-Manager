@@ -1,0 +1,7 @@
+.streamlit/
+__pycache__/
+*.pyc
+.env
+# 대용량 모델 파일은 따로 관리하거나 LFS 사용 권장
+models/*.pt
+models/*.h5
