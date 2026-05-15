@@ -15,13 +15,13 @@ with col2:
     st.image(
         "solar.png", 
         use_container_width=True,
-        caption="패널 사진을 업로드하면 Solar Manager AI가 오염도와 예상 손실액을 계산합니다.."
+        caption="태양광 패널 사진을 업로드하면 Solar Manager AI가 오염도와 예상 손실액을 계산합니다.."
     )
     
 # 2. 헤더 섹션
 st.title("☀️ 솔라매니저 AI")
 st.subheader("사진 한 장으로 내 발전소 수익을 지키세요")
-st.info("패널 사진을 업로드하면 AI가 오염도와 예상 손실액을 계산합니다.")
+st.info("태양광 패널 사진을 업로드하면 AI가 오염도와 예상 손실액을 계산합니다.")
 
 # 3. 1단계: 사진 업로드
 uploaded_file = st.file_uploader("패널 사진을 선택하거나 촬영하세요", type=["jpg", "png", "jpeg"])
