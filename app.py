@@ -5,6 +5,16 @@ import time
 # 1. 페이지 설정
 st.set_page_config(page_title="솔라매니저 AI", layout="centered")
 
+# 상단 대표 이미지 (SolarManager)
+col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+with col2:
+    # 파일명이 'solar.png'인지 다시 한번 확인해주세요!
+    st.image(
+        "solar.png", 
+        use_container_width=True,
+        caption="패널 사진을 업로드하면 Solar Manager AI가 오염도와 예상 손실액을 계산합니다.."
+    )
+    
 # 2. 헤더 섹션
 st.title("☀️ 솔라매니저 AI")
 st.subheader("사진 한 장으로 내 발전소 수익을 지키세요")
