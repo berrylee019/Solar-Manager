@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import time
 import requests
+import json
+
 
 # 1. 페이지 설정
 st.set_page_config(page_title="솔라매니저 AI", layout="centered")
