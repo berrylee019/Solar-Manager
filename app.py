@@ -102,13 +102,21 @@ if st.session_state.get('show_form'):
     with st.form("payment_lead"):
         email = st.text_input("혜택을 받으실 이메일")
         submitted = st.form_submit_button("사전 예약하고 50% 할인받기")
-        
         if submitted:
             if email:
-                status = create_github_issue(email, "Pro Monthly")
-                if status == 201:
-                    st.success("예약 완료! 깃허브 이슈에 안전하게 저장되었습니다.")
+                # 함수를 호출하고 결과값을 받습니다.
+                token = st.secrets["GITHUB_TOKEN"]
+                repo = st.secrets["REPO_NAME"]
+                url = f"https://api.github.com/repos/{repo}/issues"
+                headers = {"Authorization": f"token {token}"}
+                data = {"title": f"결제시도: {email}", "body": f"Plan: Pro"}
+                
+                response = requests.post(url, headers=headers, json=data)
+                
+                if response.status_code == 201:
+                    st.success("예약 완료!")
                 else:
-                    st.error("데이터 저장에 실패했습니다. 설정을 확인해 주세요.")
-            else:
-                st.warning("이메일을 입력해 주세요.")
+                    # 여기에서 진짜 범인을 잡습니다!
+                    st.error(f"실패 원인: {response.status_code}")
+                    st.write(response.json()) # 구체적인 에러 메시지 출력
+
