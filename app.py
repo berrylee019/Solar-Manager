@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import time
+import requests
 
 # 1. 페이지 설정
 st.set_page_config(page_title="솔라매니저 AI", layout="centered")
@@ -67,3 +68,45 @@ if uploaded_file is not None:
 
 else:
     st.warning("분석을 시작하려면 사진을 업로드해 주세요.")
+
+
+
+def create_github_issue(email, plan):
+    """결제 시도 데이터를 깃허브 이슈로 전송합니다."""
+    token = st.secrets["GITHUB_TOKEN"]
+    repo = st.secrets["REPO_NAME"]
+    url = f"https://api.github.com/repos/{repo}/issues"
+    
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    data = {
+        "title": f"🚀 결제 시도: {email}",
+        "body": f"**플랜:** {plan}\n**이메일:** {email}\n**일시:** {st.session_state.get('current_time', 'N/A')}",
+        "labels": ["fake-door-test", "lead"]
+    }
+    
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    return response.status_code
+
+# 결제 버튼 클릭 후 폼 부분
+if st.button("월 9,900원에 Pro 시작하기"):
+    st.session_state['show_form'] = True
+
+if st.session_state.get('show_form'):
+    st.info("현재 Pro 버전은 사전 예약 중입니다. 특별 혜택을 놓치지 마세요!")
+    with st.form("payment_lead"):
+        email = st.text_input("혜택을 받으실 이메일")
+        submitted = st.form_submit_button("사전 예약하고 50% 할인받기")
+        
+        if submitted:
+            if email:
+                status = create_github_issue(email, "Pro Monthly")
+                if status == 201:
+                    st.success("예약 완료! 깃허브 이슈에 안전하게 저장되었습니다.")
+                else:
+                    st.error("데이터 저장에 실패했습니다. 설정을 확인해 주세요.")
+            else:
+                st.warning("이메일을 입력해 주세요.")
